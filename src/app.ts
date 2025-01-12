@@ -3,6 +3,8 @@ import cors from 'cors'
 import { config } from 'dotenv'
 import { connectDB } from './utils/connectDB'
 import waterQualityRoutes from './routes/waterQuality.routes'
+import userRoutes from './routes/user.routes'
+import { errorMiddleware } from './middlewares/error.middlewares'
 
 const app: Application = express()
 
@@ -24,6 +26,9 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/water-quality', waterQualityRoutes)
+app.use('/api/v1/user', userRoutes)
+
+app.use(errorMiddleware)
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
