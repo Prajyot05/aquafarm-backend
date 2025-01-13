@@ -118,10 +118,18 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
         const user = await User.findOne({username})
         // Verify Password
         if(user && (await bcrypt.compare(password, user.password))){
+
+            // Set JWT as an HTTP-only cookie
+            res.cookie("token", generateToken(user._id as ObjectId), {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict", // Prevent CSRF attacks
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            });
+
             res.status(200).json({
                 success: true,
-                message: "Login successful",
-                token: generateToken(user._id as ObjectId)
+                message: "Login successful"
             })
         }
         else{
@@ -151,6 +159,25 @@ export const getAdmin = async (req: CustomRequest, res: Response, next: NextFunc
         return next(new ErrorHandler(`Failed to get Admin: ${error}`, 400));
     }
 }
+
+
+export const logoutUser = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.cookie("token", "", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            expires: new Date(0), // Expire the cookie
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Logged out successfully",
+        });
+    } catch (error) {
+        next(new ErrorHandler(`Failed to log out: ${error}`, 500));
+    }
+};
 
 // Generate JWT
 const generateToken = (id: ObjectId): string => {
