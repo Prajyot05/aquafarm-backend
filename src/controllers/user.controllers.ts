@@ -143,7 +143,6 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
 export const getAdmin = async (req: CustomRequest, res: Response, next: NextFunction) => {
     try {
         const user = await User.findById(req.user!.id).select("-password")
-        console.log('USER: ', user)
 
         if (!user) {
             return next(new ErrorHandler("User not found", 404));

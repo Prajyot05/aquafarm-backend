@@ -5,6 +5,7 @@ import { connectDB } from './utils/connectDB'
 import waterQualityRoutes from './routes/waterQuality.routes'
 import userRoutes from './routes/user.routes'
 import { errorMiddleware } from './middlewares/error.middlewares'
+import cookieParser from 'cookie-parser'
 
 const app: Application = express()
 
@@ -26,6 +27,7 @@ app.use(
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
     res.send('API is Working with /api/v1')
