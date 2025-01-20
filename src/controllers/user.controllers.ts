@@ -65,7 +65,6 @@ export const createAdmin = async (req: Request<{}, {}, CreateAdminBody>, res: Re
     }
 };
 
-
 export const createSuperAdmin = async (req: Request<{}, {}, CreateAdminBody>, res: Response, next: NextFunction) => {
     const { username, password, emailId, phone } = req.body
     console.log(username, password, emailId, phone)
@@ -143,7 +142,6 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
 export const getAdmin = async (req: CustomRequest, res: Response, next: NextFunction) => {
     try {
         const user = await User.findById(req.user!.id).select("-password")
-
         if (!user) {
             return next(new ErrorHandler("User not found", 404));
         }
@@ -158,7 +156,6 @@ export const getAdmin = async (req: CustomRequest, res: Response, next: NextFunc
         return next(new ErrorHandler(`Failed to get Admin: ${error}`, 400));
     }
 }
-
 
 export const logoutUser = (req: Request, res: Response, next: NextFunction) => {
     try {

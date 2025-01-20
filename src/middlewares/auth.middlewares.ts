@@ -10,7 +10,6 @@ export const authorizeAdmin = async (
     next: NextFunction
 ) => {
     let token
-
     if (req.cookies && req.cookies.token) {
         try {
             token = req.cookies.token
