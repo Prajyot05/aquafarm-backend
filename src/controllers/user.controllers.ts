@@ -175,6 +175,47 @@ export const logoutUser = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+export const createHandler = async (req: Request<{}, {}, CreateAdminBody>, res: Response, next: NextFunction) => {
+    const { username, password, phone } = req.body
+
+    if(!username || !password || !phone) {
+        return next(new ErrorHandler("Kindly fill all required fields", 400));
+    }
+
+    try {
+        // Check if username already exists
+        const userExists = await User.findOne({username})
+
+        if(userExists){
+            return next(new ErrorHandler("Username already exists", 400));
+        }
+
+        // Hash the password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        // Create new user
+        const user = await User.create({
+            username,
+            password: hashedPassword,
+            phone: phone,
+            role: "HANDLER"
+        })
+
+        if(!user){
+            return next(new ErrorHandler("An error occurred while creating Handler", 500));
+        }
+        else{
+            res.status(200).json({ 
+                success: true,
+                message: "Successfully created Handler" 
+            })
+        }
+    } catch (error) {
+        return next(new ErrorHandler(`Failed to create Handler: ${error}`, 400));
+    }
+}
+
 // Generate JWT
 const generateToken = (id: ObjectId): string => {
     return jwt.sign({ id: id.toString() }, process.env.JWT_SECRET!, {

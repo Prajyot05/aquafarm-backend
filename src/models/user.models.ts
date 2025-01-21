@@ -19,7 +19,7 @@ const UserSchema: Schema = new Schema({
     },
     role: {
         type: String,
-        enum: ['ADMIN', 'SUPERADMIN'],
+        enum: ['ADMIN', 'SUPERADMIN', 'HANDLER'],
         default: 'ADMIN'
     },
     pond: {

@@ -16,7 +16,7 @@ export interface UserType extends Document {
     password: string;
     emailId?: string;
     phone: string;
-    role: 'ADMIN' | 'SUPERADMIN';
+    role: 'ADMIN' | 'SUPERADMIN' | 'HANDLER';
     pond?: mongoose.Types.ObjectId;
     createdAt?: Date;
     updatedAt?: Date;
@@ -27,7 +27,7 @@ export interface RequestUser {
     username: string;
     emailId?: string;
     phone: string;
-    role: 'ADMIN' | 'SUPERADMIN';
+    role: 'ADMIN' | 'SUPERADMIN' | 'HANDLER';
 }
 
 export interface CustomRequest extends Request {
