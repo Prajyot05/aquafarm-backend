@@ -157,7 +157,7 @@ export const getAdmin = async (req: CustomRequest, res: Response, next: NextFunc
     }
 }
 
-export const logoutUser = (req: Request, res: Response, next: NextFunction) => {
+export const logoutUser = (req: Request, res: Response, next: NextFunction) => { // do this in frontend, pond foldder validation
     try {
         res.cookie("token", "", {
             httpOnly: true,

@@ -14,7 +14,13 @@ const PondSchema: Schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    trays: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Tray',
+        },
+    ],
 })
 
 export const Pond = mongoose.model<PondType>(

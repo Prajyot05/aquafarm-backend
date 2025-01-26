@@ -1,8 +1,25 @@
 import express from 'express'
-import { createAdmin, createHandler, createSuperAdmin, getAdmin, loginUser, logoutUser } from '../controllers/user.controllers'
-import { authorizeAdmin, authorizeHandler, authorizeNoone, authorizeSuperAdmin } from '../middlewares/auth.middlewares'
+import {
+    createAdmin,
+    createHandler,
+    createSuperAdmin,
+    getAdmin,
+    loginUser,
+    logoutUser,
+} from '../controllers/user.controllers'
+import {
+    authorizeNoone,
+    authorizeSuperAdmin,
+} from '../middlewares/auth.middlewares'
 import { upload } from '../utils/multer'
-import { getImages, uploadImages } from '../controllers/pond.controllers'
+import {
+    addTray,
+    deleteTray,
+    getPonds,
+    getTraysForPond,
+    updateTray,
+    uploadImages,
+} from '../controllers/pond.controllers'
 
 // /api/v1/user...
 const router = express.Router()
@@ -14,18 +31,30 @@ router.post('/logout', logoutUser)
 router.post('/admin/create', authorizeSuperAdmin, createAdmin)
 
 // Get Admin
-router.get('/admin', authorizeAdmin, getAdmin)
+router.get('/admin', getAdmin)
 
 // Create SuperAdmin
 router.post('/superadmin/create', authorizeNoone, createSuperAdmin)
 
 // Create Handler
-router.post('/handler/create', authorizeAdmin, createHandler)
+router.post('/handler/create', createHandler)
 
 // Upload Images
-router.post('/handler/upload', upload, authorizeHandler, uploadImages)
+router.post('/handler/upload', upload, uploadImages)
 
-// Get Images
-router.get('/pond/images', authorizeHandler, getImages)
+// Get Trays for a Pond
+router.get('/pond/trays', getTraysForPond)
+
+// Get All Ponds
+router.get('/ponds', getPonds)
+
+// Add Tray to a Pond
+router.post('/pond/tray/add', addTray)
+
+// Update Tray Name
+router.post('/pond/tray/update', updateTray)
+
+// Delete Tray
+router.delete('/pond/tray/delete', deleteTray)
 
 export default router
