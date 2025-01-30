@@ -43,7 +43,7 @@ router.post('/handler/create', createHandler)
 router.post('/handler/upload', upload, uploadImages)
 
 // Get Trays for a Pond
-router.get('/pond/trays', getTraysForPond)
+router.get('/pond/trays/:pondId', getTraysForPond)
 
 // Get All Ponds
 router.get('/ponds', getPonds)

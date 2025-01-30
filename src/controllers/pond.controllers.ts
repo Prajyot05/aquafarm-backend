@@ -135,14 +135,12 @@ export const getTraysForPond = async (
     next: NextFunction
 ) => {
     try {
-        // Using pondId will be more efficient
-        const { pondName } = req.body
-
-        if (!pondName) {
-            return next(new ErrorHandler('Pond Name is required', 404))
+        const { pondId } = req.params
+        if (!pondId) {
+            return next(new ErrorHandler('Pond ID is required', 404))
         }
 
-        const pond = await Pond.findOne({ name: pondName }).populate('trays')
+        const pond = await Pond.findById(pondId).populate('trays')
         if (!pond) {
             return next(new ErrorHandler('Pond not found', 404))
         }
@@ -162,7 +160,7 @@ export const getPonds = async (
     next: NextFunction
 ) => {
     try {
-        const ponds = await Pond.find().populate('trays')
+        const ponds = await Pond.find().populate('trays admin')
 
         res.status(200).json({ success: true, ponds })
     } catch (error: any) {
@@ -172,6 +170,7 @@ export const getPonds = async (
 
 /**
  * Upload images for a specific tray.
+ * Example of image link: http://localhost:3000/captures/defName/def-tray-1/2025-01-27T14-02-40-381Z/RandomPic.jpg
  */
 export const uploadImages = async (
     req: Request,

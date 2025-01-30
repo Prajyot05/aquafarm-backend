@@ -3,9 +3,11 @@ import cors from 'cors'
 import { config } from 'dotenv'
 import { connectDB } from './utils/connectDB'
 import waterQualityRoutes from './routes/waterQuality.routes'
+import weightRoutes from './routes/weight.routes'
 import userRoutes from './routes/user.routes'
 import { errorMiddleware } from './middlewares/error.middlewares'
 import cookieParser from 'cookie-parser'
+import path from 'path'
 
 const app: Application = express()
 
@@ -25,9 +27,10 @@ app.use(
     })
 )
 
-app.use(cookieParser());
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use('/captures', express.static(path.join(__dirname, '../captures')))
 
 app.get('/', (req, res) => {
     res.send('API is Working with /api/v1')
@@ -35,6 +38,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/water-quality', waterQualityRoutes)
 app.use('/api/v1/user', userRoutes)
+app.use('/api/v1/weights', weightRoutes)
 
 app.use(errorMiddleware)
 
